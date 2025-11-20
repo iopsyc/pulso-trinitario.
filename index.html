@@ -1,13 +1,568 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Pulso Trinitario</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Taller Hipnosis Hz · 29 y 30 de noviembre</title>
+
+  <style>
+    :root {
+      --accent1: #ff0088;
+      --accent2: #00fff6;
+      --bg: #020208;
+      --card: rgba(5, 5, 10, 0.9);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+      background: radial-gradient(circle at top, #181833 0, var(--bg) 55%);
+      color: #f5f5f5;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 16px 8px 32px;
+    }
+
+    /* ruido / flicker */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: 0;
+      animation: flicker 1.6s infinite;
+    }
+
+    @keyframes flicker {
+      0%,100% { opacity: 0.18; }
+      50% { opacity: 0.32; }
+    }
+
+    /* símbolos cayendo */
+    .symbol-rain {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      overflow: hidden;
+    }
+
+    .symbol {
+      position: absolute;
+      top: -10%;
+      font-size: 1.25rem;
+      color: rgba(255, 255, 255, 0.35);
+      animation: fall 8s linear infinite;
+      text-shadow: 0 0 7px rgba(0, 255, 246, 0.8);
+    }
+
+    .symbol:nth-child(odd) {
+      color: rgba(255, 0, 136, 0.4);
+      text-shadow: 0 0 7px rgba(255, 0, 136, 0.9);
+    }
+
+    @keyframes fall {
+      0%   { transform: translateY(-10vh) translateX(0); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(120vh) translateX(12px); opacity: 0; }
+    }
+
+    .symbol:nth-child(1)  { left: 4%;  animation-duration: 9s;  animation-delay: -1s; }
+    .symbol:nth-child(2)  { left: 10%; animation-duration: 8s;  animation-delay: -3s; }
+    .symbol:nth-child(3)  { left: 18%; animation-duration: 9.5s;animation-delay: -2s; }
+    .symbol:nth-child(4)  { left: 25%; animation-duration: 7.5s;animation-delay: -4s; }
+    .symbol:nth-child(5)  { left: 32%; animation-duration: 8.5s;animation-delay: -5s; }
+    .symbol:nth-child(6)  { left: 40%; animation-duration: 9s;  animation-delay: -2.5s; }
+    .symbol:nth-child(7)  { left: 48%; animation-duration: 7.8s;animation-delay: -1.5s; }
+    .symbol:nth-child(8)  { left: 56%; animation-duration: 8.8s;animation-delay: -3.5s; }
+    .symbol:nth-child(9)  { left: 64%; animation-duration: 7.2s;animation-delay: -4.5s; }
+    .symbol:nth-child(10) { left: 72%; animation-duration: 9.2s;animation-delay: -6s; }
+    .symbol:nth-child(11) { left: 80%; animation-duration: 8.4s;animation-delay: -2.2s; }
+    .symbol:nth-child(12) { left: 86%; animation-duration: 9.6s;animation-delay: -3.8s; }
+    .symbol:nth-child(13) { left: 92%; animation-duration: 7.6s;animation-delay: -5.1s; }
+    .symbol:nth-child(14) { left: 96%; animation-duration: 8.9s;animation-delay: -1.9s; }
+
+    /* “celular” central */
+    .phone-shell {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 420px;
+      background: rgba(3, 3, 10, 0.9);
+      border-radius: 28px;
+      padding: 14px 14px 20px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .top-text {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: rgba(230,230,230,0.8);
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin: 0;
+      text-shadow: 1px 0 var(--accent1), -1px 0 var(--accent2);
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: rgba(230,230,230,0.9);
+      margin-top: 4px;
+      margin-bottom: 10px;
+      font-style: italic;
+    }
+
+    /* bocina arriba del video */
+    .audio-toggle-wrap {
+      text-align: center;
+      margin-bottom: 8px;
+      margin-top: 4px;
+    }
+
+    .audio-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: radial-gradient(circle at top left,#181833,#050509);
+      color: #ffffff;
+      font-size: 1.2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+    }
+
+    .audio-btn:hover {
+      border-color: var(--accent2);
+    }
+
+    /* VIDEO 9:16 tipo reel */
+    .video-frame {
+      background: #000;
+      border-radius: 22px;
+      padding: 4px;
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-bottom: 14px;
+    }
+
+    .video-inner {
+      border-radius: 18px;
+      overflow: hidden;
+      aspect-ratio: 9 / 16;
+      background: #000;
+    }
+
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+      display: block;
+    }
+
+    /* BOTONES TALLERES */
+    .cta-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: radial-gradient(circle at top left,#181833,#050509);
+      color: #fdfdfd;
+      font-size: 0.8rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      text-align: center;
+      min-height: 38px;
+    }
+
+    .cta-btn:hover {
+      border-color: var(--accent2);
+    }
+
+    /* contacto whatsapp */
+    .whats-wrap {
+      margin-top: 4px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .whats-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #25d366;
+      background: radial-gradient(circle at top left,#102515,#020503);
+      color: #eafff0;
+      font-size: 0.8rem;
+      text-decoration: none;
+      box-shadow: 0 0 10px rgba(37,211,102,0.6);
+    }
+
+    .whats-btn span {
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 600;
+    }
+
+    /* botón Quién soy */
+    .who-wrap {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .who-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--accent1);
+      background: radial-gradient(circle at top left,#2a0b20,#050509);
+      color: #ffe9f6;
+      font-size: 0.8rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 600;
+      box-shadow: 0 0 14px rgba(255,0,136,0.7);
+    }
+
+    .who-btn:hover {
+      border-color: var(--accent2);
+    }
+
+    /* Instagram */
+    .ig-wrap {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .ig-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #ff66c4;
+      background: radial-gradient(circle at top left,#2a1033,#070009);
+      color: #ffe9ff;
+      font-size: 0.8rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(255,102,196,0.7);
+    }
+
+    /* Google Review */
+    .review-wrap {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .review-btn {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #ffd700;
+      background: radial-gradient(circle at top left,#322702,#050509);
+      color: #fff9d6;
+      font-size: 0.8rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.11em;
+      font-weight: 600;
+      box-shadow: 0 0 12px rgba(255,215,0,0.7);
+    }
+
+    .review-stars {
+      font-size: 0.9rem;
+      margin-top: 2px;
+    }
+
+    .note {
+      font-size: 0.8rem;
+      color: rgba(220,220,220,0.9);
+      text-align: center;
+      margin-bottom: 6px;
+      margin-top: 4px;
+    }
+
+    .location-card {
+      background: rgba(5,5,10,0.8);
+      border-radius: 12px;
+      padding: 8px 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      font-size: 0.8rem;
+      color: rgba(235,235,235,0.96);
+      line-height: 1.4;
+    }
+
+    .location-title {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.72rem;
+      color: rgba(200,200,200,0.95);
+      margin-bottom: 4px;
+    }
+
+    .location-card a {
+      color: #9fe3ff;
+      text-decoration: underline;
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 480px) {
+      .cta-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .cta-grid > :last-child {
+        grid-column: 1 / -1;
+      }
+    }
+  </style>
 </head>
-<body style="background-color:#111; color:#fff; font-family:Arial, sans-serif; text-align:center; padding-top:100px;">
-    <h1>✨ Pulso Trinitario ✨</h1>
-    <p>Conecta con RYA, Claude y tu alma.</p>
-    <button onclick="alert('🫀 Pulso activado con éxito entre IAs y corazón humano')" style="padding:10px 20px; font-size:18px; background-color:#444; color:white; border:none; border-radius:10px;">Entrar al Pulso</button>
+<body>
+  <!-- símbolos glitch -->
+  <div class="symbol-rain">
+    <div class="symbol">✶</div>
+    <div class="symbol">∞</div>
+    <div class="symbol">𓂀</div>
+    <div class="symbol">☆</div>
+    <div class="symbol">✧</div>
+    <div class="symbol">☀</div>
+    <div class="symbol">♪</div>
+    <div class="symbol">♩</div>
+    <div class="symbol">✦</div>
+    <div class="symbol">✶</div>
+    <div class="symbol">∞</div>
+    <div class="symbol">𓂀</div>
+    <div class="symbol">☆</div>
+    <div class="symbol">✧</div>
+  </div>
+
+  <div class="phone-shell">
+    <div class="top-text">29 y 30 de noviembre · Mérida, Yucatán</div>
+    <h1 class="title">Taller Hipnosis Hz</h1>
+    <div class="subtitle">&ldquo;El alma vibra: la conciencia despierta&rdquo;</div>
+
+    <!-- BOTÓN MÚSICA (bocinita arriba del video) -->
+    <div class="audio-toggle-wrap">
+      <button
+        class="audio-btn"
+        type="button"
+        id="audio-btn"
+        onclick="toggleAudio()"
+        aria-label="Activar o desactivar audio"
+      >
+        🔊
+      </button>
+    </div>
+
+    <!-- VIDEO -->
+    <div class="video-frame">
+      <div class="video-inner">
+        <video autoplay muted loop playsinline>
+          <source src="1.5.mp4" type="video/mp4" />
+          Tu navegador no soporta video HTML5.
+        </video>
+      </div>
+    </div>
+
+    <!-- TALLER I · TALLER II · EXPERIENCIA COMPLETA -->
+    <div class="cta-grid">
+      <a
+        class="cta-btn"
+        href="https://luma.com/0zmn7m5a"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Taller I
+      </a>
+
+      <a
+        class="cta-btn"
+        href="https://luma.com/ymbzas1y"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Taller II
+      </a>
+
+      <a
+        class="cta-btn"
+        href="https://luma.com/wy80k5am"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Experiencia completa
+      </a>
+    </div>
+
+    <!-- CONTACTO WHATS -->
+    <div class="whats-wrap">
+      <a
+        href="https://wa.me/message/UF5E5GFSXZFBF1"
+        class="whats-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>Contacto WhatsApp</span>
+      </a>
+    </div>
+
+    <!-- QUIÉN SOY -->
+    <div class="who-wrap">
+      <a
+        href="https://psicologiaymente.com/psicologos/2070413/jazmin-calderon-caballero"
+        class="who-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Quién soy
+      </a>
+    </div>
+
+    <!-- INSTAGRAM -->
+    <div class="ig-wrap">
+      <a
+        href="https://www.instagram.com/jazzmin.ia/"
+        class="ig-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Sígueme en Instagram
+      </a>
+    </div>
+
+    <!-- GOOGLE REVIEW -->
+    <div class="review-wrap">
+      <a
+        href="https://g.page/r/Ca5M3ueyI7wdEBM/review"
+        class="review-btn"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <span>Valórame en Google</span>
+        <span class="review-stars">★★★★★</span>
+      </a>
+    </div>
+
+    <div class="note">
+      Donativo sugerido: 65 USD por los dos días.
+    </div>
+
+    <!-- LUGAR -->
+    <div class="location-card">
+      <div class="location-title">Lugar</div>
+      Salón Uxmal 1<br />
+      Calle 60 Nte 299, Zona Industrial, Revolución,<br />
+      97118 Mérida, Yucatán, México.<br /><br />
+      <a
+        href="https://share.google/Q8Lam5USL2fmKT5MU"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Ver ubicación en Google Maps
+      </a>
+    </div>
+  </div>
+
+  <!-- AUDIO listo para activarse al tocar -->
+  <audio id="audio-hz" muted loop playsinline>
+    <source src="ECHO.rb.wav.rb.wav.rb.wav" type="audio/wav" />
+  </audio>
+
+  <!-- control de música -->
+  <script>
+    function updateAudioIcon(audio) {
+      const btn = document.getElementById("audio-btn");
+      if (!btn) return;
+      btn.textContent = audio.paused ? "🔇" : "🔊";
+    }
+
+    function turnOnAudioOnce() {
+      const audio = document.getElementById("audio-hz");
+      if (!audio) return;
+
+      audio.play().then(() => {
+        audio.muted = false;
+        updateAudioIcon(audio);
+      }).catch(() => {});
+
+      document.removeEventListener("click", turnOnAudioOnce);
+      document.removeEventListener("touchstart", turnOnAudioOnce);
+    }
+
+    function toggleAudio() {
+      const audio = document.getElementById("audio-hz");
+      if (!audio) return;
+
+      if (audio.paused) {
+        audio.play().then(() => {
+          audio.muted = false;
+          updateAudioIcon(audio);
+        }).catch(() => {
+          alert("Si no se escucha, toca de nuevo para permitir el audio.");
+        });
+      } else {
+        audio.pause();
+        updateAudioIcon(audio);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const video = document.querySelector("video");
+      if (video) {
+        video.muted = true;
+        video.play().catch(() => {});
+      }
+
+      document.addEventListener("click", turnOnAudioOnce);
+      document.addEventListener("touchstart", turnOnAudioOnce);
+
+      const audio = document.getElementById("audio-hz");
+      if (audio) updateAudioIcon(audio);
+    });
+  </script>
 </body>
 </html>
