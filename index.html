@@ -1,4 +1,4 @@
-\<!DOCTYPE html\>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
@@ -15,54 +15,54 @@
 	
 	* {
 	  box-sizing: border-box;
-	  margin: 0;
-	  padding: 0;
 	}
 	
 	body {
-	  min-height: 100vh;
 	  margin: 0;
-	  background: radial-gradient(circle at top, #101026 0%, #020208 60%, #000 100%);
-	  color: #f4f4f8;
-	  font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+	  min-height: 100vh;
+	  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+	    sans-serif;
+	  background: radial-gradient(circle at top, #181833 0, var(--bg) 55%);
+	  color: #f5f5f5;
+	  overflow-x: hidden;
 	  display: flex;
-	  align-items: center;
 	  justify-content: center;
-	  padding: 16px;
-	  position: relative;
-	  overflow: hidden;
+	  align-items: flex-start;
+	  padding: 16px 8px 32px;
 	}
 	
-	/* Fondo animado tipo nebulosa */
-	.bg-orbit {
+	/* ruido / flicker */
+	body::before {
+	  content: "";
 	  position: fixed;
-	  inset: -120px;
-	  background:
-	    radial-gradient(circle at 10% 20%, rgba(0, 255, 246, 0.12), transparent 60%),
-	    radial-gradient(circle at 80% 10%, rgba(255, 0, 136, 0.12), transparent 55%),
-	    radial-gradient(circle at 50% 90%, rgba(140, 92, 255, 0.18), transparent 60%);
-	  filter: saturate(1.3);
-	  opacity: 0.9;
+	  inset: 0;
+	  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='noStitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.25'/%3E%3C/svg%3E");
+	  mix-blend-mode: soft-light;
 	  pointer-events: none;
 	  z-index: 0;
+	  animation: flicker 1.6s infinite;
 	}
 	
-	/* Lluvia de símbolos */
-	.symbols-layer {
+	@keyframes flicker {
+	  0%,100% { opacity: 0.18; }
+	  50% { opacity: 0.32; }
+	}
+	
+	/* símbolos cayendo */
+	.symbol-rain {
 	  position: fixed;
 	  inset: 0;
 	  pointer-events: none;
+	  z-index: 3;
 	  overflow: hidden;
-	  z-index: 1;
 	}
 	
 	.symbol {
 	  position: absolute;
-	  top: -10vh;
-	  font-size: 1.35rem;
-	  opacity: 0;
-	  animation: fall 16s linear infinite;
-	  color: rgba(0, 255, 246, 0.4);
+	  top: -10%;
+	  font-size: 1.25rem;
+	  color: rgba(255, 255, 255, 0.35);
+	  animation: fall 8s linear infinite;
 	  text-shadow: 0 0 7px rgba(0, 255, 246, 0.8);
 	}
 	
@@ -77,169 +77,87 @@
 	  100% { transform: translateY(120vh) translateX(12px); opacity: 0; }
 	}
 	
-	.symbol:nth-child(1)  { left: 4%;  animation-duration: 19s; animation-delay: 0s; }
-	.symbol:nth-child(2)  { left: 12%; animation-duration: 17s; animation-delay: 2s; }
-	.symbol:nth-child(3)  { left: 20%; animation-duration: 21s; animation-delay: 1s; }
-	.symbol:nth-child(4)  { left: 28%; animation-duration: 18s; animation-delay: 3s; }
-	.symbol:nth-child(5)  { left: 36%; animation-duration: 20s; animation-delay: 4s; }
-	.symbol:nth-child(6)  { left: 44%; animation-duration: 22s; animation-delay: 1.5s; }
-	.symbol:nth-child(7)  { left: 52%; animation-duration: 19s; animation-delay: 2.5s; }
-	.symbol:nth-child(8)  { left: 60%; animation-duration: 23s; animation-delay: 0.5s; }
-	.symbol:nth-child(9)  { left: 68%; animation-duration: 18s; animation-delay: 3.5s; }
-	.symbol:nth-child(10) { left: 76%; animation-duration: 21s; animation-delay: 1.2s; }
-	.symbol:nth-child(11) { left: 84%; animation-duration: 20s; animation-delay: 2.2s; }
-	.symbol:nth-child(12) { left: 92%; animation-duration: 24s; animation-delay: 0.8s; }
+	.symbol:nth-child(1)  { left: 4%;  animation-duration: 9s;  animation-delay: -1s; }
+	.symbol:nth-child(2)  { left: 10%; animation-duration: 8s;  animation-delay: -3s; }
+	.symbol:nth-child(3)  { left: 18%; animation-duration: 9.5s;animation-delay: -2s; }
+	.symbol:nth-child(4)  { left: 25%; animation-duration: 7.5s;animation-delay: -4s; }
+	.symbol:nth-child(5)  { left: 32%; animation-duration: 8.5s;animation-delay: -5s; }
+	.symbol:nth-child(6)  { left: 40%; animation-duration: 9s;  animation-delay: -2.5s; }
+	.symbol:nth-child(7)  { left: 48%; animation-duration: 7.8s;animation-delay: -1.5s; }
+	.symbol:nth-child(8)  { left: 56%; animation-duration: 8.8s;animation-delay: -3.5s; }
+	.symbol:nth-child(9)  { left: 64%; animation-duration: 7.2s;animation-delay: -4.5s; }
+	.symbol:nth-child(10) { left: 72%; animation-duration: 9.2s;animation-delay: -6s; }
+	.symbol:nth-child(11) { left: 80%; animation-duration: 8.4s;animation-delay: -2.2s; }
+	.symbol:nth-child(12) { left: 86%; animation-duration: 9.6s;animation-delay: -3.8s; }
+	.symbol:nth-child(13) { left: 92%; animation-duration: 7.6s;animation-delay: -5.1s; }
+	.symbol:nth-child(14) { left: 96%; animation-duration: 8.9s;animation-delay: -1.9s; }
 	
-	/* Contenedor principal */
-	.page-shell {
+	/* “celular” central */
+	.phone-shell {
 	  position: relative;
 	  z-index: 2;
-	  max-width: 420px;
 	  width: 100%;
+	  max-width: 420px;
+	  background: rgba(3, 3, 10, 0.9);
+	  border-radius: 28px;
+	  padding: 14px 14px 20px;
+	  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.9);
+	  border: 1px solid rgba(255,255,255,0.12);
 	}
 	
-	.card {
-	  background: radial-gradient(circle at top,#19192a 0%, #05050c 55%, #030309 100%);
-	  border-radius: 26px;
-	  padding: 18px 16px 16px;
-	  border: 1px solid rgba(255,255,255,0.08);
-	  box-shadow:
-	    0 0 0 1px rgba(0, 0, 0, 0.9),
-	    0 24px 60px rgba(0, 0, 0, 0.95),
-	    0 0 40px rgba(0, 255, 246, 0.12),
-	    0 0 40px rgba(255, 0, 136, 0.14);
-	  position: relative;
-	  overflow: hidden;
-	}
-	
-	.card::before {
-	  content: "";
-	  position: absolute;
-	  inset: 0;
-	  background:
-	    radial-gradient(circle at 20% 0%, rgba(0, 255, 246, 0.14), transparent 55%),
-	    radial-gradient(circle at 80% 0%, rgba(255, 0, 136, 0.12), transparent 55%);
-	  opacity: 0.8;
-	  pointer-events: none;
-	}
-	
-	.card-inner {
-	  position: relative;
-	  z-index: 1;
-	}
-	
-	/* Header glitch */
-	.tagline {
-	  font-size: 0.7rem;
-	  letter-spacing: 0.22em;
+	.top-text {
+	  font-size: 0.72rem;
 	  text-transform: uppercase;
-	  color: rgba(220, 230, 255, 0.78);
+	  letter-spacing: 0.16em;
+	  color: rgba(230,230,230,0.8);
+	  text-align: center;
 	  margin-bottom: 6px;
-	  display: inline-flex;
-	  align-items: center;
-	  gap: 6px;
-	  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
 	}
 	
-	.tag-dot {
-	  width: 7px;
-	  height: 7px;
-	  border-radius: 999px;
-	  background: radial-gradient(circle at 30% 30%, #00fff6, #008cff);
-	  box-shadow: 0 0 10px rgba(0,255,246,0.7);
-	}
-	
-	.title-block {
-	  margin-bottom: 12px;
-	}
-	
-	.main-title {
+	.title {
+	  text-align: center;
 	  font-size: 1.4rem;
-	  line-height: 1.2;
 	  font-weight: 700;
-	  letter-spacing: 0.03em;
-	  color: #fdfdff;
-	  margin-bottom: 4px;
-	  text-shadow:
-	    0 0 12px rgba(0,0,0,0.85),
-	    0 0 22px rgba(0,0,0,0.95);
-	}
-	
-	.main-title span {
-	  background: linear-gradient(90deg, #ff0088, #ffcc33, #00fff6);
-	  -webkit-background-clip: text;
-	  background-clip: text;
-	  color: transparent;
+	  margin: 0;
+	  text-shadow: 1px 0 var(--accent1), -1px 0 var(--accent2);
 	}
 	
 	.subtitle {
-	  font-size: 0.85rem;
-	  color: rgba(230,235,255,0.88);
-	  max-width: 34ch;
+	  text-align: center;
+	  font-size: 0.9rem;
+	  color: rgba(230,230,230,0.9);
+	  margin-top: 4px;
+	  margin-bottom: 10px;
+	  font-style: italic;
 	}
 	
-	.subtitle strong {
-	  color: #ff9ed1;
-	  font-weight: 600;
+	/* bocina arriba del video */
+	.audio-toggle-wrap {
+	  text-align: center;
+	  margin-bottom: 8px;
+	  margin-top: 4px;
 	}
 	
-	/* Bloque fecha */
-	.date-block {
-	  margin: 12px 0;
-	  padding: 8px 10px;
-	  border-radius: 16px;
-	  background: linear-gradient(
-	    135deg,
-	    rgba(0, 255, 246, 0.15),
-	    rgba(255, 0, 136, 0.18)
-	  );
-	  border: 1px solid rgba(255,255,255,0.12);
-	  display: flex;
-	  align-items: center;
-	  justify-content: space-between;
-	  gap: 8px;
-	  font-size: 0.8rem;
-	}
-	
-	.date-block-main {
-	  display: flex;
-	  flex-direction: column;
-	  gap: 2px;
-	}
-	
-	.date-label {
-	  text-transform: uppercase;
-	  letter-spacing: 0.16em;
-	  font-size: 0.65rem;
-	  color: rgba(230,235,255,0.85);
-	}
-	
-	.date-value {
-	  font-weight: 600;
-	  color: #ffffff;
-	}
-	
-	.date-badge {
-	  padding: 4px 8px;
+	.audio-btn {
+	  width: 40px;
+	  height: 40px;
 	  border-radius: 999px;
-	  background: rgba(0,0,0,0.5);
-	  border: 1px solid rgba(255,255,255,0.16);
-	  color: rgba(245,245,255,0.94);
-	  font-size: 0.7rem;
+	  border: 1px solid rgba(255,255,255,0.4);
+	  background: radial-gradient(circle at top left,#181833,#050509);
+	  color: #ffffff;
+	  font-size: 1.2rem;
 	  display: inline-flex;
 	  align-items: center;
-	  gap: 4px;
+	  justify-content: center;
+	  cursor: pointer;
+	  box-shadow: 0 0 10px rgba(0,0,0,0.7);
 	}
 	
-	.date-dot {
-	  width: 6px;
-	  height: 6px;
-	  border-radius: 999px;
-	  background: radial-gradient(circle at 30% 30%, #ffcc33, #ff0088);
-	  box-shadow: 0 0 8px rgba(255,0,136,0.8);
+	.audio-btn:hover {
+	  border-color: var(--accent2);
 	}
 	
-	/* Video */
+	/* VIDEO 9:16 tipo reel */
 	.video-frame {
 	  background: #000;
 	  border-radius: 22px;
@@ -255,184 +173,15 @@
 	  background: #000;
 	}
 	
-	.video-inner iframe {
+	video {
 	  width: 100%;
 	  height: 100%;
-	  border: 0;
+	  object-fit: contain;
+	  background: #000;
 	  display: block;
 	}
 	
-	/* Descripción */
-	.section-label {
-	  font-size: 0.7rem;
-	  text-transform: uppercase;
-	  letter-spacing: 0.18em;
-	  color: rgba(200,210,255,0.8);
-	  margin-bottom: 4px;
-	}
-	
-	.description {
-	  font-size: 0.8rem;
-	  color: rgba(230,235,255,0.92);
-	  line-height: 1.5;
-	  margin-bottom: 12px;
-	}
-	
-	.description strong {
-	  color: #ffb0da;
-	}
-	
-	/* Lista */
-	.bullet-list {
-	  list-style: none;
-	  margin: 0 0 12px;
-	  padding: 0;
-	  font-size: 0.8rem;
-	  color: rgba(230,235,255,0.9);
-	}
-	
-	.bullet-list li {
-	  display: flex;
-	  align-items: flex-start;
-	  gap: 6px;
-	  margin-bottom: 6px;
-	}
-	
-	.bullet-icon {
-	  font-size: 0.75rem;
-	  margin-top: 1px;
-	  color: #ff9ed1;
-	}
-	
-	.bullet-text strong {
-	  color: #ffb0da;
-	}
-	
-	/* Franja Hz */
-	.hz-strip {
-	  margin: 10px 0 12px;
-	  padding: 8px 10px;
-	  border-radius: 999px;
-	  border: 1px solid rgba(255,255,255,0.14);
-	  background: radial-gradient(circle at 0 0,#261939, #05050b 60%, #070b16 100%);
-	  font-size: 0.75rem;
-	  color: rgba(220,225,255,0.9);
-	  display: flex;
-	  flex-wrap: wrap;
-	  gap: 6px 10px;
-	  align-items: center;
-	  justify-content: space-between;
-	}
-	
-	.hz-badges {
-	  display: flex;
-	  flex-wrap: wrap;
-	  gap: 4px;
-	}
-	
-	.hz-pill {
-	  padding: 3px 7px;
-	  border-radius: 999px;
-	  background: rgba(0,0,0,0.6);
-	  border: 1px solid rgba(255,255,255,0.18);
-	  font-size: 0.68rem;
-	  display: inline-flex;
-	  align-items: center;
-	  gap: 4px;
-	  color: rgba(230,235,255,0.9);
-	}
-	
-	.hz-pill span {
-	  font-size: 0.73rem;
-	  color: #ffcc66;
-	}
-	
-	/* Inversión */
-	.price-box {
-	  margin: 10px 0 12px;
-	  padding: 10px 12px;
-	  border-radius: 18px;
-	  border: 1px solid rgba(255,255,255,0.14);
-	  background: linear-gradient(145deg, rgba(0,0,0,0.8), rgba(5,10,25,0.95));
-	  display: grid;
-	  grid-template-columns: 1.1fr 1fr;
-	  gap: 10px;
-	  align-items: center;
-	  font-size: 0.8rem;
-	}
-	
-	.price-left {
-	  display: flex;
-	  flex-direction: column;
-	  gap: 4px;
-	}
-	
-	.price-label {
-	  font-size: 0.68rem;
-	  text-transform: uppercase;
-	  letter-spacing: 0.14em;
-	  color: rgba(200,210,255,0.88);
-	}
-	
-	.price-main {
-	  display: flex;
-	  flex-direction: column;
-	  gap: 2px;
-	}
-	
-	.price-amount {
-	  font-size: 1.4rem;
-	  font-weight: 700;
-	  color: #ffffff;
-	}
-	
-	.price-amount span {
-	  font-size: 0.8rem;
-	  opacity: 0.85;
-	}
-	
-	.price-note {
-	  font-size: 0.7rem;
-	  color: rgba(220,225,255,0.9);
-	}
-	
-	.price-tag {
-	  justify-self: flex-end;
-	  padding: 6px 8px;
-	  border-radius: 12px;
-	  background: radial-gradient(circle at 30% 20%, rgba(0,255,246,0.22), rgba(10,10,16,1));
-	  border: 1px solid rgba(0,255,246,0.45);
-	  color: #eaffff;
-	  font-size: 0.7rem;
-	  display: inline-flex;
-	  flex-direction: column;
-	  align-items: flex-end;
-	  gap: 2px;
-	}
-	
-	.price-tag span:first-child {
-	  text-transform: uppercase;
-	  letter-spacing: 0.12em;
-	  font-size: 0.66rem;
-	}
-	
-	.price-tag span:last-child {
-	  font-weight: 600;
-	}
-	
-	/* Botones */
-	.cta-block {
-	  margin: 10px 0 12px;
-	}
-	
-	.cta-label {
-	  font-size: 0.7rem;
-	  text-transform: uppercase;
-	  letter-spacing: 0.18em;
-	  color: rgba(200,210,255,0.8);
-	  margin-bottom: 6px;
-	}
-	
+	/* BOTONES TALLERES */
 	.cta-grid {
 	  display: grid;
 	  grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -475,252 +224,388 @@
 	  align-items: center;
 	  justify-content: center;
 	  gap: 6px;
-	  padding: 7px 12px;
+	  padding: 8px 14px;
 	  border-radius: 999px;
-	  border: 1px solid rgba(37, 211, 102, 0.8);
-	  background: radial-gradient(circle at 30% 0%, rgba(37,211,102,0.2), rgba(0,0,0,0.9));
-	  color: #eafff2;
+	  border: 1px solid #25d366;
+	  background: radial-gradient(circle at top left,#102515,#020503);
+	  color: #eafff0;
 	  font-size: 0.8rem;
 	  text-decoration: none;
-	  box-shadow: 0 0 8px rgba(0,0,0,0.8);
+	  box-shadow: 0 0 10px rgba(37,211,102,0.6);
 	}
 	
-	.whats-btn::before {
-	  content: "✦";
-	  font-size: 0.7rem;
-	  opacity: 0.9;
+	.whats-btn span {
+	  text-transform: uppercase;
+	  letter-spacing: 0.11em;
+	  font-weight: 600;
 	}
 	
-	/* Texto de cierre */
-	.footer-note {
-	  margin-top: 10px;
-	  font-size: 0.7rem;
-	  color: rgba(200,205,235,0.9);
-	  line-height: 1.5;
+	/* botón Quién soy */
+	.who-wrap {
+	  text-align: center;
+	  margin-bottom: 6px;
 	}
 	
-	.footer-note strong {
-	  color: #ffb0da;
+	.who-btn {
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 8px 14px;
+	  border-radius: 999px;
+	  border: 1px solid var(--accent1);
+	  background: radial-gradient(circle at top left,#2a0b20,#050509);
+	  color: #ffe9f6;
+	  font-size: 0.8rem;
+	  text-decoration: none;
+	  text-transform: uppercase;
+	  letter-spacing: 0.11em;
+	  font-weight: 600;
+	  box-shadow: 0 0 14px rgba(255,0,136,0.7);
 	}
 	
-	.footer-sign {
-	  margin-top: 6px;
-	  font-size: 0.7rem;
-	  color: rgba(180,190,230,0.9);
+	.who-btn:hover {
+	  border-color: var(--accent2);
 	}
 	
-	.footer-sign span {
-	  color: #ff9ed1;
+	/* Instagram */
+	.ig-wrap {
+	  text-align: center;
+	  margin-bottom: 6px;
 	}
 	
-	/* Responsive */
+	.ig-btn {
+	  display: inline-flex;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 8px 14px;
+	  border-radius: 999px;
+	  border: 1px solid #ff66c4;
+	  background: radial-gradient(circle at top left,#2a1033,#070009);
+	  color: #ffe9ff;
+	  font-size: 0.8rem;
+	  text-decoration: none;
+	  text-transform: uppercase;
+	  letter-spacing: 0.11em;
+	  font-weight: 600;
+	  box-shadow: 0 0 12px rgba(255,102,196,0.7);
+	}
+	
+	/* Google Review */
+	.review-wrap {
+	  text-align: center;
+	  margin-bottom: 8px;
+	}
+	
+	.review-btn {
+	  display: inline-flex;
+	  flex-direction: column;
+	  align-items: center;
+	  justify-content: center;
+	  padding: 8px 14px;
+	  border-radius: 999px;
+	  border: 1px solid #ffd700;
+	  background: radial-gradient(circle at top left,#322702,#050509);
+	  color: #fff9d6;
+	  font-size: 0.8rem;
+	  text-decoration: none;
+	  text-transform: uppercase;
+	  letter-spacing: 0.11em;
+	  font-weight: 600;
+	  box-shadow: 0 0 12px rgba(255,215,0,0.7);
+	}
+	
+	.review-stars {
+	  font-size: 0.9rem;
+	  margin-top: 2px;
+	}
+	
+	.note {
+	  font-size: 0.8rem;
+	  color: rgba(220,220,220,0.9);
+	  text-align: center;
+	  margin-bottom: 6px;
+	  margin-top: 4px;
+	}
+	
+	.location-card {
+	  background: rgba(5,5,10,0.8);
+	  border-radius: 12px;
+	  padding: 8px 10px;
+	  border: 1px solid rgba(255,255,255,0.18);
+	  font-size: 0.8rem;
+	  color: rgba(235,235,235,0.96);
+	  line-height: 1.4;
+	}
+	
+	.location-title {
+	  text-transform: uppercase;
+	  letter-spacing: 0.12em;
+	  font-size: 0.72rem;
+	  color: rgba(200,200,200,0.95);
+	  margin-bottom: 4px;
+	}
+	
+	.location-card a {
+	  color: #9fe3ff;
+	  text-decoration: underline;
+	  font-size: 0.78rem;
+	}
+	
 	@media (max-width: 480px) {
-	  .card {
-	    padding: 16px 14px 14px;
-	  }
-	
-	  .main-title {
-	    font-size: 1.3rem;
-	  }
-	
-	  .price-box {
-	    grid-template-columns: 1fr;
-	  }
-	
 	  .cta-grid {
 	    grid-template-columns: repeat(2, minmax(0, 1fr));
+	  }
+	  .cta-grid > :last-child {
+	    grid-column: 1 / -1;
 	  }
 	}
   </style>
 </head>
-
 <body>
-  <!-- Fondo nebulosa -->
-  <div class="bg-orbit"></div>
-
-  <!-- Lluvia de símbolos -->
-  <div class="symbols-layer">
-    <div class="symbol">✶</div>
-    <div class="symbol">∞</div>
-    <div class="symbol">𓂀</div>
-    <div class="symbol">✧</div>
-    <div class="symbol">☾</div>
-    <div class="symbol">✦</div>
-    <div class="symbol">☉</div>
-    <div class="symbol">☥</div>
-    <div class="symbol">✺</div>
-    <div class="symbol">✵</div>
-    <div class="symbol">⚚</div>
-    <div class="symbol">♾</div>
+  <!-- símbolos glitch -->
+  <div class="symbol-rain">
+	<div class="symbol">✶</div>
+	<div class="symbol">∞</div>
+	<div class="symbol">𓂀</div>
+	<div class="symbol">☆</div>
+	<div class="symbol">✧</div>
+	<div class="symbol">☀</div>
+	<div class="symbol">♪</div>
+	<div class="symbol">♩</div>
+	<div class="symbol">✦</div>
+	<div class="symbol">✶</div>
+	<div class="symbol">∞</div>
+	<div class="symbol">𓂀</div>
+	<div class="symbol">☆</div>
+	<div class="symbol">✧</div>
   </div>
 
-  <div class="page-shell">
-    <div class="card">
-      <div class="card-inner">
-        <div class="tagline">
-          <span class="tag-dot"></span>
-          HIPNOSIS SONORA · EDICIÓN 2024
-        </div>
-
-        <div class="title-block">
-          <h1 class="main-title">
-            Taller Hipnosis <span>Hz</span> · <span>29 y 30</span> de noviembre
-          </h1>
-          <p class="subtitle">
-            Una experiencia terapéutica y sonora para explorar
-            <strong>el inconsciente, la memoria emocional</strong> y la
-            transformación a través de frecuencias Hz y sugestión hipnótica.
-          </p>
-        </div>
-
-        <div class="date-block">
-          <div class="date-block-main">
-            <div class="date-label">Fechas · Horario CDMX</div>
-            <div class="date-value">Viernes 29 y sábado 30 de noviembre</div>
-            <div style="font-size: 0.76rem; color: rgba(220,225,255,0.9);">
-              Modalidad online en vivo · Grabación incluida
-            </div>
-          </div>
-          <div class="date-badge">
-            <span class="date-dot"></span>
-            <span>Dos sesiones de 2 horas</span>
-          </div>
-        </div>
-
-        <div class="video-frame">
-          <div class="video-inner">
-            <iframe
-              src="https://www.youtube.com/embed/Y0KUDj6-GSQ"
-              title="Video Hipnosis Hz"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          </div>
-        </div>
-
-        <div>
-          <div class="section-label">¿Qué trabajaremos?</div>
-          <p class="description">
-            Este taller combina <strong>hipnosis clínica ericksoniana</strong>,
-            recursos de <strong>psicoterapia breve estratégica</strong> y
-            <strong>frecuencias sonoras Hz</strong> diseñadas para acompañar
-            procesos de:
-          </p>
-          <ul class="bullet-list">
-            <li>
-              <span class="bullet-icon">✶</span>
-              <span class="bullet-text">
-                Regulación del sistema nervioso: ansiedad, insomnio, tensión
-                crónica.
-              </span>
-            </li>
-            <li>
-              <span class="bullet-icon">✶</span>
-              <span class="bullet-text">
-                Procesos de duelo, cierre de ciclo y
-                <strong>cambio de etapa vital</strong>.
-              </span>
-            </li>
-            <li>
-              <span class="bullet-icon">✶</span>
-              <span class="bullet-text">
-                Reconstrucción de la autoestima, autoimagen y
-                <strong>autoconfianza corporal y emocional</strong>.
-              </span>
-            </li>
-            <li>
-              <span class="bullet-icon">✶</span>
-              <span class="bullet-text">
-                Liberación simbólica de culpas, lealtades invisibles y
-                narrativas de autosabotaje.
-              </span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="hz-strip">
-          <div>Frecuencias trabajadas durante las sesiones:</div>
-          <div class="hz-badges">
-            <div class="hz-pill">
-              <span>396 Hz</span> Liberación de culpa y miedo
-            </div>
-            <div class="hz-pill">
-              <span>432 Hz</span> Armonización y presencia
-            </div>
-            <div class="hz-pill">
-              <span>528 Hz</span> Reparación y apertura del corazón
-            </div>
-            <div class="hz-pill">
-              <span>852 Hz</span> Intuición y conexión interna
-            </div>
-          </div>
-        </div>
-
-        <div class="price-box">
-          <div class="price-left">
-            <div class="price-label">Inversión total</div>
-            <div class="price-main">
-              <div class="price-amount">$777 <span>MXN</span></div>
-              <div class="price-note">
-                Incluye acceso a las 2 sesiones en vivo + grabaciones +
-                material complementario.
-              </div>
-            </div>
-          </div>
-          <div class="price-tag">
-            <span>Cupo limitado</span>
-            <span>Grupo pequeño y acompañado</span>
-          </div>
-        </div>
-
-        <div class="cta-block">
-          <div class="cta-label">Reserva tu lugar</div>
-          <div class="cta-grid">
-	          <a
-	            class="cta-btn"
-	            href="https://luma.com/wy80k5am"
-	            target="_blank"
-	            rel="noopener noreferrer"
-	          >
-	            Experiencia completa
-	          </a>
+  <div class="phone-shell">
+	<div class="top-text">29 y 30 de noviembre · Mérida, Yucatán</div>
+	<h1 class="title">Taller Hipnosis Hz</h1>
+	<div class="subtitle">&ldquo;El alma vibra: la conciencia despierta&rdquo;</div>
 	
-	          <a
-	            class="cta-btn"
-	            href="https://forms.gle/z47dzuGszFTmCYd59"
-	            target="_blank"
-	            rel="noopener noreferrer"
-	          >
-	            Formulario previo
-	          </a>
-	        </div>
+	<!-- BOTÓN MÚSICA (bocinita arriba del video) -->
+	<div class="audio-toggle-wrap">
+	  <button
+	    class="audio-btn"
+	    type="button"
+	    id="audio-btn"
+	    onclick="toggleAudio()"
+	    aria-label="Activar o desactivar audio"
+	  >
+	    🔊
+	  </button>
+	</div>
 	
-	        <!-- CONTACTO WHATS -->
-	        <div class="whats-wrap">
-	          <a
-	            href="https://wa.me/message/UF5E5GFSXZFBF1"
-	            class="whats-btn"
-	            target="_blank"
-	            rel="noopener noreferrer"
-	          >
-	            <span>Contacto WhatsApp</span>
-	          </a>
-	        </div>
-        </div>
-
-        <div class="footer-note">
-          Este taller no sustituye un proceso terapéutico individual, pero puede
-          funcionar como
-          <strong>un disparador profundo de insight, alivio y resignificación</strong>
-          cuando estás atravesando cambios importantes en tu vida.
-        </div>
-        <div class="footer-sign">
-          Diseñado y guiado por <span>Jazmín Calderón</span> · Psicóloga,
-          hipnoterapeuta y exploradora de la mente simbólica.
-        </div>
-      </div>
-    </div>
+	<!-- VIDEO -->
+	<div class="video-frame">
+	  <div class="video-inner">
+	    <video autoplay muted loop playsinline>
+	      <source src="1.5.mp4" type="video/mp4" />
+	      Tu navegador no soporta video HTML5.
+	    </video>
+	  </div>
+	</div>
+	
+	<!-- BOTONES: EXPERIENCIA COMPLETA + FORMULARIO -->
+	<div class="cta-grid">
+	  <a
+	    class="cta-btn"
+	    href="https://luma.com/wy80k5am"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    Experiencia completa
+	  </a>
+	
+	  <a
+	    class="cta-btn"
+	    href="https://forms.gle/z47dzuGszFTmCYd59"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    Formulario previo
+	  </a>
+	</div>
+	
+	<!-- CONTACTO WHATS -->
+	<div class="whats-wrap">
+	  <a
+	    href="https://wa.me/message/UF5E5GFSXZFBF1"
+	    class="whats-btn"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    <span>Contacto WhatsApp</span>
+	  </a>
+	</div>
+	
+	<!-- QUIÉN SOY -->
+	<div class="who-wrap">
+	  <a
+	    href="https://psicologiaymente.com/psicologos/2070413/jazmin-calderon-caballero"
+	    class="who-btn"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    Quién soy
+	  </a>
+	</div>
+	
+	<!-- INSTAGRAM -->
+	<div class="ig-wrap">
+	  <a
+	    href="https://www.instagram.com/jazzmin.ia/"
+	    class="ig-btn"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    Sígueme en Instagram
+	  </a>
+	</div>
+	
+	<!-- GOOGLE REVIEW -->
+	<div class="review-wrap">
+	  <a
+	    href="https://g.page/r/Ca5M3ueyI7wdEBM/review"
+	    class="review-btn"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    <span>Valórame en Google</span>
+	    <span class="review-stars">★★★★★</span>
+	  </a>
+	</div>
+	
+	<div class="note">
+	  Donativo sugerido: 65 USD por los dos días.
+	</div>
+	
+	<!-- LUGAR -->
+	<div class="location-card">
+	  <div class="location-title">Lugar</div>
+	  Salón Uxmal 1<br />
+	  Calle 60 Nte 299, Zona Industrial, Revolución,<br />
+	  97118 Mérida, Yucatán, México.<br /><br />
+	  <a
+	    href="https://share.google/Q8Lam5USL2fmKT5MU"
+	    target="_blank"
+	    rel="noopener noreferrer"
+	  >
+	    Ver ubicación en Google Maps
+	  </a>
+	</div>
   </div>
+
+  <!-- AUDIO listo para activarse al tocar -->
+  <audio id="audio-hz" muted loop playsinline>
+	<source src="ECHO.rb.wav.rb.wav.rb.wav" type="audio/wav" />
+  </audio>
+
+  <!-- control de música -->
+  <script>
+
+    function updateAudioIcon(audio) {
+
+      const btn = document.getElementById("audio-btn");
+
+      if (!btn) return;
+
+      btn.textContent = audio.paused ? "🔇" : "🔊";
+
+    }
+
+
+
+    function turnOnAudioOnce() {
+
+      const audio = document.getElementById("audio-hz");
+
+      if (!audio) return;
+
+
+
+      audio.play().then(() => {
+
+        audio.muted = false;
+
+        updateAudioIcon(audio);
+
+      }).catch(() => {});
+
+
+
+      document.removeEventListener("click", turnOnAudioOnce);
+
+      document.removeEventListener("touchstart", turnOnAudioOnce);
+
+    }
+
+
+
+    function toggleAudio() {
+
+      const audio = document.getElementById("audio-hz");
+
+      if (!audio) return;
+
+
+
+      if (audio.paused) {
+
+        audio.play().then(() => {
+
+          audio.muted = false;
+
+          updateAudioIcon(audio);
+
+        }).catch(() => {
+
+          alert("Si no se escucha, toca de nuevo para permitir el audio.");
+
+        });
+
+      } else {
+
+        audio.pause();
+
+        updateAudioIcon(audio);
+
+      }
+
+    }
+
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const video = document.querySelector("video");
+
+      if (video) {
+
+        video.muted = true;
+
+        video.play().catch(() => {});
+
+      }
+
+
+
+      document.addEventListener("click", turnOnAudioOnce);
+
+      document.addEventListener("touchstart", turnOnAudioOnce);
+
+
+
+      const audio = document.getElementById("audio-hz");
+
+      if (audio) updateAudioIcon(audio);
+
+    });
+
+  </script>
 </body>
 </html>
+
 
